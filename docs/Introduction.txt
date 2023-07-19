@@ -1,0 +1,67 @@
+
+			  # Use for reference 
+        ----> https://python.land/virtual-environments/virtualenv <----
+
+--------------------------------------------------------------------------------
+
+# Installing python on debian system 
+
+	sudo apt install python3
+
+# Installing pip for python 
+
+	sudo apt-get install -y python3-pip
+
+# Installing some essential packages
+
+	sudo apt-get install build-essential libssl-dev libffi-dev python-dev	
+
+# Always important to run python in a virtual enviroment.
+  
+  1. This to ensure that different versions of python don't
+     conflict with eachother.
+
+  2. You can install packages specific to your project.
+
+  3. Also ensures that no changes detrimental changes are 
+     made on the computer which might break it.
+
+     This is because when a command is run and a path is not
+     found the os searches for multiple paths and makes changes 
+     with the path it finds. So if in a virtual enviroment 
+     the change made will only stay in the Venv, so safe.
+  this is how to install and set up it up.
+
+ > Installation :
+
+	sudo apt install python3-venv
+
+ > Setting up VENV :
+
+ switch to dir where u wanna set up venv and run 
+
+	python3 -m venv [venv name]
+     
+   eg : python3 -m venv project-1
+
+ > To start/activate the venv :
+
+ 	source [venv name]/bin/activate 
+
+   eg : source project-1/bin/activate
+
+ > To stop/Deactivate the venv :
+
+ 	deactivate
+
+ > To delete venv :
+ 
+ # Just deactivate and delete the venv folder
+
+--------------------------------------------------------------------------------
+
+ > To automatically commit and push the code to your GIT :
+
+ # Just run the auto_commit.sh file
+
+	./auto_commit.sh
