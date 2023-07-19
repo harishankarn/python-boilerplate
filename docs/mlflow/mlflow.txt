@@ -1,0 +1,195 @@
+#https://towardsdatascience.com/a-simple-mlops-pipeline-on-your-local-machine-db9326addf31
+
+#https://github.com/JanMarcelKezmann/Apache-Airflow-Beam-TensorFlow-Examples/blob/main/Installation-And-Setup.md
+#python setup
+
+sudo apt-get update -y
+sudo apt-get upgrade
+sudo apt-get install -y python3-venv
+sudo apt-get install software-properties-common  
+sudo apt-add-repository universe
+sudo apt-get update
+sudo apt-get install python3-setuptools
+sudo apt install python3-pip
+sudo -H pip install --upgrade pip
+sudo apt-get update -y
+sudo apt-get install -y libpq-dev
+pip install psycopg2
+    
+MLflow installation
+------------------------
+mkdir  -p  /opt/flow
+cd /opt/flow
+python3 -m venv mlops
+. ./mlops/bin/activate
+pip install mlflow boto3 pymysql
+mlflow --version
+mlflow server ?host 0.0.0.0
+mkdir -p /tmp/mlfow
+mlflow server --backend-store-uri file:///tmp/mlfow/  --default-artifact-root file:///tmp/mlfow/ --host 0.0.0.0
+Open in the browser http://0.0.0.0:5000/#/
+
+========================================================
+// Installation begins here, additional task like setting username and password will be asked during installation!
+$ cd ~
+$ sudo wget https://dev.mysql.com/get/Downloads/MySQL-5.7/mysql-server_5.7.28-1ubuntu19.04_amd64.deb-bundle.tar
+$ cd ~
+$ tar -xvf mysql-server_5.7.28-1ubuntu19.04_amd64.deb-bundle.tar
+
+// final command to execute installation
+$ dpkg -i mysql-*.deb
+
+// check MySQL server status with the following command:
+$ /etc/init.d/mysql status
+
+// Which in turn, should output:
+// * MySQL Community Server 5.7.28 is started
+
+sudo apt-get install libmysqlclient-dev 
+sudo apt-get install libssl-dev 
+sudo apt-get install libkrb5-dev 
+sudo apt-get install libsasl2-dev 
+
+$ sudo systemctl start mysql
+$ sudo systemctl enable mysql
+$ mysqld --version
+//Make sure 5.7 mysql is installed  ( version 8 may not work )
+
+#start mysql server demon
+
+$grep 'temporary password' /var/log/mysqld.log
+Note the password from the mysqld.log file
+
+$sudo mysql_secure_installation
+
+Type the current password got from /var/log/mysqld.log file
+
+Update the new password to Welcome0
+
+Change the password for root : Yes
+
+new password to Welcome0
+
+reenter the password
+
+Do you wish to continue with the password provided :Yes
+Remove anonymous users? No
+Disallow root login remotely: No
+Remove test database and access to it? No
+Reload privilege tables now? Yes
+All Done
+==============================================
+$mysql -u root -pWelcome0 -hlocalhost
+
+mysql>CREATE DATABASE `air` CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci;
+mysql>GRANT ALL PRIVILEGES ON `air`.* TO `air`@`myhost` IDENTIFIED BY 'Welcome0';
+mysql>GRANT ALL PRIVILEGES ON `air`.* TO `air`@`192.168.57.134` IDENTIFIED BY 'Welcome0';
+mysql>GRANT ALL PRIVILEGES ON `air`.* TO `air`@`localhost` IDENTIFIED BY 'Welcome0';
+mysql>GRANT ALL PRIVILEGES ON `%`.* TO `%`@`%` IDENTIFIED BY 'Welcome0';
+mysql>GRANT ALL privileges ON *.* TO '*'@'*' IDENTIFIED BY 'Welcome0';
+mysql>GRANT ALL ON *.* TO '*'@'%' IDENTIFIED BY 'Welcome0';
+mysql>SET GLOBAL explicit_defaults_for_timestamp = 1;
+mysql>Commit;
+mysql>FLUSH PRIVILEGES;
+mysql>EXIT;
+
+
+
+mlflow server --backend-store-uri mysql+pymysql://air:"Welcome0"@localhost:3306/air --default-artifact-root file:///tmp/mlfow/ --host 0.0.0.0
+
+cd /opt/flow
+. ./mlops/bin/activate
+cd /opt/flow/mlops
+git clone https://gitlab.com/sajukk/nlp.git
+cd  /opt/flow/mlops/nlp/src/imgdetect/
+curl -o  https://gist.githubusercontent.com/kylegallatin/13feb6d501da6e221dd6196b686eda58/raw/5f221268ff1c1077df6d01edcf982669b840a495/train.py train.py
+curl -o https://raw.githubusercontent.com/llSourcell/math_of_machine_learning/master/kc_house_data.csv kc_house_data.csv
+python train.py
+
+
+DVC installation
+------------------------
+cd /opt/flow/mlops/nlp
+pip install dvc 
+dvc init
+mkdir /tmp/dvc-storage
+dvc remote  add myremote /tmp/dvc-storage -d -f
+
+
+####NO NEED TO RUN this command AWS ONLY ## 
+dvc run -d s3://mybucket/input.json -o file:///tmp/out.tsv ./run-my-spark-job.sh
+#########################
+
+Airflow installation
+------------------------
+cd /opt/flow/mlops
+pip install apache-airflow pyhs2 matplotlib apache-airflow[celery,redis,jdbc] mysqlclient 
+pip install psycopg2
+pip install apache-airflow['cncf.kubernetes']
+pip install -U pip setuptools 
+pip install --upgrade virtualenv
+
+
+
+airflow version
+airflow db init
+
+mysql>CREATE DATABASE `airflow` CHARSET UTF8mb3 COLLATE utf8_general_ci;
+mysql>GRANT ALL PRIVILEGES ON `airflow`.* TO `airflow`@`myhost` IDENTIFIED BY 'Welcome0';
+mysql>GRANT ALL PRIVILEGES ON `airflow`.* TO `airflow`@`192.168.57.134` IDENTIFIED BY 'Welcome0';
+mysql>GRANT ALL PRIVILEGES ON `airflow`.* TO `airflow`@`localhost` IDENTIFIED BY 'Welcome0';
+mysql>GRANT ALL PRIVILEGES ON `%`.* TO `%`@`%` IDENTIFIED BY 'Welcome0';
+mysql>GRANT ALL privileges ON *.* TO '*'@'*' IDENTIFIED BY 'Welcome0';
+mysql>GRANT ALL ON *.* TO '*'@'%' IDENTIFIED BY 'Welcome0';
+mysql>FLUSH PRIVILEGES;
+mysql>EXIT;
+
+
+
+install redis
+---------
+sudo apt install redis-server
+sudo vi /etc/redis/redis.conf
+supervised systemd
+bind 127.0.0.1 ::1
+
+sudo systemctl restart redis.service
+sudo systemctl status redis
+redis-cli
+
+set test "It's working!"
+get test
+
+
+
+vi ~/airflow/airflow.cfg
+sql_alchemy_conn=mysql://airflow:Welcome0@localhost:3306/airflow
+broker_url = redis://localhost:6379/0
+
+export AIRFLOW_HOME=~/airflow
+airflow db init
+nohup airflow webserver >> ~/airflow/logs/webserver.log &
+nohup airflow worker >> ~/airflow/logs/worker.log &
+nohup airflow scheduler $* >> ~/airflow/logs/scheduler.log &
+nohup airflow celery flower $* >> ~/airflow/logs/flower.log &
+
+flower ui 
+ http://<server-name>:5555
+
+
+airflow users  create --role Admin --username admin --email admin --firstname admin --lastname admin --password admin
+
+
+
+Open in the browser http://0.0.0.0:8080/#/
+
+wget https://raw.githubusercontent.com/ytiam/setup_scripts/master/airflow/dags/model_pipeline/data_demo_dag.py
+wget https://raw.githubusercontent.com/ytiam/setup_scripts/master/airflow/dags/model_pipeline/data_process.py
+wget https://raw.githubusercontent.com/ytiam/setup_scripts/master/airflow/dags/model_pipeline/model.py
+wget https://raw.githubusercontent.com/jbrownlee/Datasets/master/iris.csv
+
+cp *.py cd /opt/flow/mlops/lib/python3.8/site-packages/airflow/example_dags
+
+cd /opt/flow/mlops/lib/python3.8/site-packages/airflow/example_dags
+
+

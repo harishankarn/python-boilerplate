@@ -1,0 +1,22 @@
+{
+  "MINIO.MLFLOW_S3_ENDPOINT_URL":"http://minio-service.kubeflow.svc.cluster.local:9000",
+  "MINIO.AWS_ACCESS_KEY_ID":"minio",
+  "MINIO.AWS_SECRET_ACCESS_KEY":"minio123",
+  "MLFLOW.MLFLOW_TRACKING_URL":"http://mlflow-ui.kubeflow.svc.cluster.local:5000",
+  "CLIENT.SUBMIT_URL":"http://localhost:8888",
+  "MINIO.ENDPOINT_URL":"minio-service.kubeflow.svc.cluster.local:9000",
+  "dag": [{
+    "dagname": "name",
+    "dagdata": "somedata"
+  },{
+    "dagname": "name2",
+    "dagdata": "somedata2"
+  }],
+   "model":[ {
+    "name": "modelname",
+    "modelparam1": "somedata"
+    },{
+    "name": "somthing",
+    "param1": "somthing"
+    }]
+}

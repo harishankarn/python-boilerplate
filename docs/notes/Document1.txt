@@ -1,0 +1,57 @@
+sudo apt install python3-tk
+
+cd /opt/software/
+virtualenv -p python3.7 /opt/software/objectdectensor
+source   objectdectensor/bin/activate
+pip install tensorflow==2.2.0
+python -c "import tensorflow as tf;print(tf.reduce_sum(tf.random.normal([1000, 1000])))"
+mkdir TensorFlow
+cd TensorFlow
+git clone https://github.com/tensorflow/models.git
+cd /opt/software/TensorFlow
+ls
+#downlaod https://github.com/protocolbuffers/protobuf/releases
+cd /opt/software
+mkdir  /opt/software/protobuf
+wget https://github.com/protocolbuffers/protobuf/releases/download/v3.15.5/protobuf-all-3.15.5.tar.gz
+tar -xvf protobuf-all-3.15.5.tar.gz 
+vi ~/.bashrc
+export PATH=$PATH:.:/opt/software/protobuf/protobuf-3.15.5
+source ~/.bashrc
+cd /opt/software/
+source   objectdectensor/bin/activate
+cd TensorFlow/models/research/
+protoc object_detection/protos/*.proto --python_out=.
+cd /opt/software/
+mkdir cocoapi
+cd  /opt/software/cocoapi
+pip install cython
+git clone https://github.com/cocodataset/cocoapi.git
+cd cocoapi/PythonAPI
+make
+cd /opt/software/cocoapi/cocoapi/PythonAPI
+cp -r pycocotools /opt/software/TensorFlow/models/research/
+#config missing
+cd /opt/software/TensorFlow/models/research/
+cp object_detection/packages/tf2/setup.py .
+python -m pip install .
+cd /opt/software/TensorFlow/models/research/
+python object_detection/builders/model_builder_tf2_test.py
+
+cd /opt/software/TensorFlow/models/research/
+vi part1.py
+python part1.py
+#keep appending the code sinippet to end of the  part1.py file
+
+
+
+
+
+
+https://grpc.io/docs/languages/python/basics/#response-streaming-rpc
+https://grpc.io/docs/languages/cpp/basics/	
+https://www.tensorflow.org/tfx/serving/serving_advanced	
+https://grpc.io/docs/languages/python/basics/#response-streaming-rpc
+https://www.freecodecamp.org/news/grpc-server-side-streaming-with-go/
+https://tensorflow-object-detection-api-tutorial.readthedocs.io/en/latest/auto_examples/plot_object_detection_saved_model.html#sphx-glr-auto-examples-plot-object-detection-saved-model-py
+

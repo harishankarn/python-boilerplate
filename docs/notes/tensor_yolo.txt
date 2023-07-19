@@ -1,0 +1,37 @@
+
+
+tensor detaction 
+https://github.com/datitran/object_detector_app
+https://towardsdatascience.com/building-a-real-time-object-recognition-app-with-tensorflow-and-opencv-b7a2b4ebdc32
+https://towardsdatascience.com/real-time-and-video-processing-object-detection-using-tensorflow-opencv-and-docker-2be1694726e5
+https://github.com/juandes/pikachu-detection
+https://towardsdatascience.com/detecting-pikachu-on-android-using-tensorflow-object-detection-15464c7a60cd
+https://towardsdatascience.com/detecting-pikachu-in-videos-using-tensorflow-object-detection-cd872ac42c1d
+https://gist.github.com/imamdigmi/b203d120953db4ef2a89ca7ce70da0a1
+
+
+
+
+
+https://pjreddie.com/darknet/yolo/
+https://www.pyimagesearch.com/2020/02/10/opencv-dnn-with-nvidia-gpus-1549-faster-yolo-ssd-and-mask-r-cnn/
+https://pjreddie.com/darknet/install/#cuda
+https://machinelearningspace.com/yolov3-tensorflow-2-part-1/
+https://machinelearningspace.com/yolov3-tensorflow-2-part-4/
+https://www.youtube.com/watch?v=VOC3huqHrss&feature=youtu.be
+
+$ lspci | grep -i VGA | awk '{print "sudo lspci -knn -s "$1}' | bash
+
+tesla photo
+
+https://pjreddie.com/darknet/install/#cuda
+https://www.gettyimages.in/photos/tesla-model-s?phrase=tesla%20model%20s&sort=mostpopular
+https://blog.francium.tech/custom-object-training-and-detection-with-yolov3-darknet-and-opencv-41542f2ff44e
+https://medium.com/datadriveninvestor/yolov3-from-scratch-using-pytorch-part1-474b49f7c8ef
+sudo apt-get install python3-tk 
+https://pjreddie.com/darknet/yolo/
+https://docs.opencv.org/master/d2/de6/tutorial_py_setup_in_ubuntu.html
+
+https://blog.francium.tech/custom-object-training-and-detection-with-yolov3-darknet-and-opencv-41542f2ff44e
+https://www.tensorflow.org/hub/tutorials/object_detection
+https://heartbeat.fritz.ai/real-time-object-detection-using-ssd-mobilenet-v2-on-video-streams-3bfc1577399c

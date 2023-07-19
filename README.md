@@ -1,1 +1,1 @@
-# python-boilerplate
+Boiler plate project
